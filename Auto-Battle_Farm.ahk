@@ -119,7 +119,7 @@ Main()
 		Backout := SelectButton("Back.png")	
 		
 		SelectFight:
-		FightSelected := PreciseSelectButton("FightBar.png")
+		FightSelected := SelectButton("FightBar.png")
 		if (FightSelected == true) 
 		{
 			TimerA()
