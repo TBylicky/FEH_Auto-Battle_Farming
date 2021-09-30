@@ -10,3 +10,6 @@
  Replace the images in the folder with your own, and name them accordingly. 
 
  You can see an example of this script in action at: https://youtu.be/eAZHqbh8LTQ
+ 
+ Tab will make the script exit.
+ Esc will make it pause, until Esc is pressed again.

@@ -9,23 +9,12 @@ WinGetTitle, FEH , (Feh),,,
 Coordmode, Mouse, %FEH%
 CoordMode, Pixel, %FEH%
 
-;Check if window exists, or exit program
-IfWinExist, %FEH% 
-{
-	WinActivate, %FEH%
-	TimerB()
-	
-	while WinExist("FEH") 
-	{
-		Main()
-	}
-}
-else 
-{
-	Msgbox, (LTrim Fire Emblem Heroes is not active!)
-	ExitApp
-}
+TimerB()
 
+Loop
+{
+	Main()
+}
 
 Main() 
 {
