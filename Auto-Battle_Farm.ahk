@@ -9,8 +9,7 @@ WinGetTitle, FEH , (Feh),,,
 Coordmode, Mouse, %FEH%
 CoordMode, Pixel, %FEH%
 
-TimerB()
-
+Sleep, 1500
 Loop
 {
 	Main()
@@ -18,14 +17,36 @@ Loop
 
 Main() 
 {
+	;Temporary fix for error 308-8024 
+	TempGameStart:
+		GameStartSelected := MorePreciseSelectButton("SmallMenu.png")
+		if (GameStartSelected == true) 
+		{
+			;Loading time here is VERY long...
+			Sleep, 25000
+			BattleFromHallSelected := SelectButton("BattleFromHall.png")
+			if (BattleFromHallSelected == true) 
+			{
+				Sleep, 8000
+				FromMainSelected := SelectButton("ColiseumFromMain.png")
+				if (FromMainSelected == true) 
+				{
+					Sleep, 3500
+					BattlesSelected := SelectButton("ResonantBattles.png")
+					if (BattlesSelected == true) 
+					{
+						Sleep, 3500
+						TTStageSelectSelected := SelectButton("TTStageSelect.png")
+					}
+				}
+			}
+		}
+		
 	ChooseDiff:
 		DiffChosen := SelectButton("DifficultyLunatic.png")
 		
 	ChooseDiffb:
 		DiffChosenb := SelectButton("DifficultyBonds.png")
-
-	SelectSkip:
-		SkipSelected := SelectButton("skip.png")
 		
 	SelectClose:
 		CloseSelected := SelectButton("Close.png")
@@ -34,7 +55,7 @@ Main()
 		CloseBSelected := SelectButton("CloseB.png")
 		if (CloseBSelected == true) 
 		{
-			TimerB()
+			Sleep, 1500
 			Goto, SelectClose
 		}
 	
@@ -42,7 +63,7 @@ Main()
 		CloseCSelected := SelectButton("CloseQuest.png")
 		if (CloseCSelected == true) 
 		{
-			TimerB()
+			Sleep, 1500
 			Goto, SelectCloseC
 		}
 		
@@ -50,7 +71,7 @@ Main()
 		CloseDSelected := SelectButton("CloseTTSeal.png")
 		if (CloseDSelected == true) 
 		{
-			TimerB()
+			Sleep, 1500
 			Goto, SelectCloseD
 		}
 
@@ -59,122 +80,107 @@ Main()
 		
 	SelectOkB:
 		OkBSelected := SelectButton("OkB.png")
-		
-	StartAuto:
-		AutoStarted := SelectButton("AutoBattleSmall.png")
-		if (AutoStarted == true) 
-		{
-			TimerB()
-			Goto, StartAuto
-		}
-		
-	ConfirmAuto:
-		AutoConfirmed := SelectButton("AutoBattleLarge.PNG")
-		
-	FightBonds:
-		BondsFight := SelectButton("FightBonds.png")
-	
-	FightTempest:
-		TTFight := SelectButton("FightTT.png")
-		
-	FightLEGION:
-		LEGIONFight := SelectButton("FightLEGION.png")
 
-	SelectFightB:
-		FightBSelected := SelectButton("FightSelection.png")
-		if (FightBSelected == true) 
+	MapStart:
+		AutoSmallButton := SelectButton("AutoBattleSmall.png")
+		if AutoSmallButton == true) 
 		{
-			TimerA()
-			Goto, StartAuto
+			Sleep, 3500
+			AutoBigButton:= SelectButton("AutoBattleLarge.PNG")
+		}
+
+	BigConfirmButton:
+		FightSelected := SelectButton("FightSelection.png")
+		if (FightSelected == true) 
+		{
+			Sleep, 3000
+			Goto, MapStart
 		}
 		
-	SelectFightC:
-		FightCSelected := SelectButton("FightContinue.png")
-		if (FightCSelected == true) 
+	SelectContinueFight:
+		ContinueFightSelected := MorePreciseSelectButton("FightContinue.png")
+		if ContinueFightSelected == true) 
 		{
-			TimerA()
-			Goto, StartAuto
+			Sleep, 3500
+			Goto, MapStart
 		}
 
 	TheEnd:	
 		Over := SelectButton("Gameover.png")
 		if (Over == true) 
 		{
-			TimerA()
-			Goto, TheEnd
-		}
-	
-	Back:
-		Backout := SelectButton("Back.png")	
-		
-		SelectFight:
-		FightSelected := SelectButton("FightBar.png")
-		if (FightSelected == true) 
-		{
-			TimerA()
-			Goto, SelectFight
+			Sleep, 3500
+			Backout := SelectButton("Back.png")
 		}
 			
 	EndGame:
 		GameEnd := PreciseSelectButton("GameWon.png")
 		if (GameEnd == true) 
 		{
-			TimerA()
-			Goto, SelectFight
+			Sleep, 3500
+			Goto, BigConfirmButton
 		}
 		
-	EndGameB:
-		GameEndB := PreciseSelectButton("GameLost.png")
-		if (GameEndB ==	 true) 
+	LastUnitDies:
+		LastUnitDead := PreciseSelectButton("GameLost.png")
+		if (LastUnitDead == true) 
 		{
-			Goto, SelectFight
-			TimerA()
+			Sleep, 4000
+			Goto, BigConfirmButton
 		}
 		
 	EndGameB2:
-		GameEndB2 := PreciseSelectButton("Gameover.png")
+		GameEndB2 := MorePreciseSelectButton("Gameover.png")
 		if (GameEndB2 == true) 
 		{
-			TimerA()
-			Goto, SelectFight
+			Sleep, 3500
+			Goto, BigConfirmButton
 		}
 		
 	SelectCloseTT:
 		CloseTTSelected := PreciseSelectButton("CloseTTReward.png")
 		if (SelectCloseTT == true) 
 		{
-			TimerA()
+			Sleep, 3500
 			Goto, SelectCloseTT
 		}
 		
-	Surrender:
-		GiveUp := PreciseSelectButton("Give.png")
-		if (GiveUp == true) 
+	ResonantBattleBegin:
+		ResonateBegin := PreciseSelectButton("ResonateBeginner.png")
+		if (ResonateBegin == true) 
 		{
-			TimerA()
-			Goto, SelectFight
+			Sleep, 2500
+			Goto, BigConfirmButton
 		}
 		
 	Backout:
 		Backout := PreciseSelectButton("Restore.png")
 		if (Backout == true) 
 		{
-			TimerA()
+			Sleep, 3500
+		}
+		
+	ReturnError:
+		ReturnErrorSelected := PreciseSelectButton("ReturnError.png")
+		if (ReturnErrorSelected == true) 
+		{
+			Sleep, 1500
+			ReturnTitleSelected := SelectButton("ReturnTitle.png")
 		}
 }
 
 SelectButton(ImageName) 
 {
-	ColorDif := 75
+	ColorDif := 70
 
 	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%ColorDif% ButtonImages/%ImageName%
 	if (FoundX != "" and FoundY != "") 
 	{
 		MouseMove, %FoundX%, %FoundY%, 3
-		TimerB()
+		Sleep, 1500
 		Click
 		ToolTip, Found ... `n%ImageName% at %FoundX% : %FoundY%!, 10, 40
-		TimerB()
+		Sleep, 1500
 		return true
 	} 
 	else 
@@ -185,16 +191,36 @@ SelectButton(ImageName)
 
 PreciseSelectButton(ImageName) 
 {
-	ColorDif := 15
+	ColorDif := 21
 
 	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%ColorDif% ButtonImages/%ImageName%
 	if (FoundX != "" and FoundY != "") 
 	{
 		MouseMove, %FoundX%, %FoundY%, 3
-		TimerB()
+		Sleep, 1500
 		Click
 		ToolTip, Found ... `n%ImageName% at %FoundX% : %FoundY%!, 10, 40
-		TimerB()
+		Sleep, 1500
+		return true
+	} 
+	else 
+	{
+		ToolTip, Searching ... `n%ImageName%, 10, 40
+	}
+}
+
+MorePreciseSelectButton(ImageName) 
+{
+	ColorDif := 15
+
+	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%ColorDif% ButtonImages/%ImageName%
+	if (FoundX != "" and FoundY != "") 
+	{
+		MouseMove, 700, 500, 3,
+		Sleep, 1500
+		Click
+		ToolTip, Found ... `n%ImageName% at %FoundX% : %FoundY%!, 10, 40
+		Sleep, 3500
 		return true
 	} 
 	else 
@@ -208,16 +234,6 @@ RanSleep()
 {
 	Random, SleepTime, 1000, 3000
 	Sleep, %SleepTime%
-}
-
-TimerA() 
-{
-	Sleep, 3500
-}
-
-TimerB() 
-{
-	Sleep, 2000
 }
 
 ; *** Stop Script ***
