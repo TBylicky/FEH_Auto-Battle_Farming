@@ -17,12 +17,12 @@ Loop
 
 Main() 
 {
-	;Temporary fix for error 308-8024 
+	;This is a temporary fix for error 308-8024 
 	TempGameStart:
 		GameStartSelected := MorePreciseSelectButton("SmallMenu.png")
 		if (GameStartSelected == true) 
 		{
-			;Loading time here is VERY long...
+			;Loading time here is VERY long... 
 			Sleep, 25000
 			BattleFromHallSelected := SelectButton("BattleFromHall.png")
 			if (BattleFromHallSelected == true) 
@@ -41,125 +41,68 @@ Main()
 				}
 			}
 		}
-		
-	ChooseDiff:
-		DiffChosen := SelectButton("DifficultyLunatic.png")
-		
-	ChooseDiffb:
-		DiffChosenb := SelectButton("DifficultyBonds.png")
-		
-	SelectClose:
-		CloseSelected := SelectButton("Close.png")
-		
-	SelectCloseB:
-		CloseBSelected := SelectButton("CloseB.png")
-		if (CloseBSelected == true) 
-		{
-			Sleep, 1500
-			Goto, SelectClose
-		}
 	
-	SelectCloseC:
-		CloseCSelected := SelectButton("CloseQuest.png")
-		if (CloseCSelected == true) 
+	DifficultyAndArea:
+		AreWeInsideTheTower := TowerSelection("TrainingTower.png")
+		if (AreWeInsideTheTower == true)
 		{
-			Sleep, 1500
-			Goto, SelectCloseC
+			FindQuest:
+				QuestFound := SelectButton("Quest.png")
+		}
+		else
+		{
+			ChooseDiff:
+				DiffChosen := SelectButton("DifficultyLunatic.png")
+				
+			ChooseDiffb:
+				DiffChosenb := SelectButton("DifficultyBonds.png")
 		}
 		
-	SelectCloseD:
-		CloseDSelected := SelectButton("CloseTTSeal.png")
-		if (CloseDSelected == true) 
-		{
-			Sleep, 1500
-			Goto, SelectCloseD
-		}
+	BigConfirmButton()
+	
+	MapStart()
 
 	Skip:
 		Skipping := SelectButton("skip.png")
 		
-	SelectOkB:
-		OkBSelected := SelectButton("OkB.png")
-
-	MapStart:
-		AutoSmallButton := SelectButton("AutoBattleSmall.png")
-		if AutoSmallButton == true) 
-		{
-			Sleep, 3500
-			AutoBigButton:= SelectButton("AutoBattleLarge.PNG")
-		}
-
-	BigConfirmButton:
-		FightSelected := SelectButton("FightSelection.png")
-		if (FightSelected == true) 
-		{
-			Sleep, 3000
-			Goto, MapStart
-		}
-		
-	SelectContinueFight:
-		ContinueFightSelected := MorePreciseSelectButton("FightContinue.png")
-		if ContinueFightSelected == true) 
-		{
-			Sleep, 3500
-			Goto, MapStart
-		}
-
-	TheEnd:	
-		Over := SelectButton("Gameover.png")
-		if (Over == true) 
-		{
-			Sleep, 3500
-			Backout := SelectButton("Back.png")
-		}
+	SelectOk:
+		OkSelected := SelectButton("OkB.png")
 			
-	EndGame:
-		GameEnd := PreciseSelectButton("GameWon.png")
-		if (GameEnd == true) 
+	WinningGame:
+		GameIsWon := MorePreciseSelectButton("GameWon.png")
+		if (GameIsWon == true) 
 		{
-			Sleep, 3500
-			Goto, BigConfirmButton
+			BigConfirmButton()
 		}
 		
 	LastUnitDies:
 		LastUnitDead := PreciseSelectButton("GameLost.png")
 		if (LastUnitDead == true) 
 		{
-			Sleep, 4000
-			Goto, BigConfirmButton
+			Sleep, 3000
 		}
 		
-	EndGameB2:
-		GameEndB2 := MorePreciseSelectButton("Gameover.png")
-		if (GameEndB2 == true) 
+	TheEnd:	
+		Over := SelectButton("Gameover.png")
+		if (Over == true) 
 		{
-			Sleep, 3500
-			Goto, BigConfirmButton
-		}
-		
-	SelectCloseTT:
-		CloseTTSelected := PreciseSelectButton("CloseTTReward.png")
-		if (SelectCloseTT == true) 
-		{
-			Sleep, 3500
-			Goto, SelectCloseTT
+			Backout := PreciseSelectButton("ReturnError.png")
 		}
 		
 	ResonantBattleBegin:
 		ResonateBegin := PreciseSelectButton("ResonateBeginner.png")
 		if (ResonateBegin == true) 
 		{
-			Sleep, 2500
-			Goto, BigConfirmButton
+			BigConfirmButton()
 		}
 		
-	Backout:
-		Backout := PreciseSelectButton("Restore.png")
-		if (Backout == true) 
+	CancelRestore:
+		Canceled := PreciseSelectButton("Restore.png")
+		if (Canceled == true) 
 		{
-			Sleep, 3500
+			Sleep, 2000
 		}
-		
+
 	ReturnError:
 		ReturnErrorSelected := PreciseSelectButton("ReturnError.png")
 		if (ReturnErrorSelected == true) 
@@ -167,11 +110,78 @@ Main()
 			Sleep, 1500
 			ReturnTitleSelected := SelectButton("ReturnTitle.png")
 		}
+
+}
+
+; *** Functions ***
+BigConfirmButton()
+{
+	ConfirmSelection := LessPreciseSelectButton("BIG_Confirm.png")
+	if (ConfirmSelection == true)
+	{
+		Sleep, 2000
+		AutoSmallButton := SelectButton("AutoBattleSmall.png")
+		BigConfirmButton()
+	}
+}
+
+MapStart()
+{
+	AutoSmallButton := SelectButton("AutoBattleSmall.png")
+	if (AutoSmallButton == true)
+	{
+		Sleep, 2000
+		AutoBigButton:= SelectButton("AutoBattleLarge.png")
+	}
+}
+
+RanSleep() 
+{
+	Random, SleepTime, 1000, 3000
+	Sleep, %SleepTime%
+}
+
+; *** Image Selectors ***
+TowerSelection(ImageName) 
+{
+	ColorDif := 50
+
+	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%ColorDif% ButtonImages/%ImageName%
+	if (FoundX != "" and FoundY != "") 
+	{
+		Sleep, 1500
+		ToolTip, Found ... `n%ImageName% at %FoundX% : %FoundY%!, 10, 40
+		return true
+	} 
+	else 
+	{
+		ToolTip, Searching ... `n%ImageName%, 10, 40
+	}
 }
 
 SelectButton(ImageName) 
 {
 	ColorDif := 70
+
+	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%ColorDif% ButtonImages/%ImageName%
+	if (FoundX != "" and FoundY != "") 
+	{
+		MouseMove, %FoundX%, %FoundY%, 3
+		Sleep, 1500
+		Click
+		ToolTip, Found ... `n%ImageName% at %FoundX% : %FoundY%!, 10, 40
+		Sleep, 1500
+		return true
+	} 
+	else 
+	{
+		ToolTip, Searching ... `n%ImageName%, 10, 40
+	}
+}
+
+LessPreciseSelectButton(ImageName) 
+{
+	ColorDif := 50
 
 	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%ColorDif% ButtonImages/%ImageName%
 	if (FoundX != "" and FoundY != "") 
@@ -211,7 +221,7 @@ PreciseSelectButton(ImageName)
 
 MorePreciseSelectButton(ImageName) 
 {
-	ColorDif := 15
+	ColorDif := 9
 
 	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%ColorDif% ButtonImages/%ImageName%
 	if (FoundX != "" and FoundY != "") 
@@ -229,14 +239,7 @@ MorePreciseSelectButton(ImageName)
 	}
 }
 
-; *** Random Sleep Time ***
-RanSleep() 
-{
-	Random, SleepTime, 1000, 3000
-	Sleep, %SleepTime%
-}
-
-; *** Stop Script ***
+; *** Stop/Exit Script ***
 ~Escape::
     Suspend, Toggle
     Pause,,1
